@@ -19,7 +19,7 @@ stages{
             sh 'pwd' 
             sh 'ls -la' 
             sh 'python -V' 
-            sh 'git clone https://github.com/hanley/jenkins_python.git' 
+            sh 'git clone https://github.com/iloveeuuu/jenkins_python.git' 
             sh 'ls -la jenkins_python' 
             sh 'python jenkins_python/cal.py' 
           } 
@@ -28,7 +28,7 @@ stages{
             sh 'pwd' 
             sh 'ls -la' 
             sh 'python -V' 
-            sh 'git clone https://github.com/hanley/jenkins_python.git' 
+            sh 'git clone https://github.com/iloveeuuu/jenkins_python.git' 
             sh 'ls -la jenkins_python' 
             sh 'python jenkins_python/cal.py' 
           } 
@@ -37,7 +37,7 @@ stages{
             sh 'pwd' 
             sh 'ls -la' 
             sh 'python -V' 
-            sh 'git clone https://github.com/hanley/jenkins_python.git' 
+            sh 'git clone https://github.com/iloveeuuu/jenkins_python.git' 
             sh 'ls -la jenkins_python' 
             sh 'python jenkins_python/cal.py' 
           } 
