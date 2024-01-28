@@ -1,6 +1,6 @@
 # system_monitor.py
 """
-Module for monitoring system status.
+Module needed for checking usages
 """
 
 import socket
@@ -9,16 +9,13 @@ import requests
 
 class SystemMonitor:
     """
-    Class providing methods for system monitoring.
+    needed for system monitoring.
     """
 
     @staticmethod
     def check_disk_usage():
         """
-        Check disk usage to be more than 20%.
-
-        Returns:
-            bool: True if disk usage is above 20%, False otherwise.
+        Check disk usage to be more than 20%. Return as True if disk usage is above 20%, Otherwise set to False
         """
         disk_usage_percent = psutil.disk_usage('/').percent
         return disk_usage_percent > 20
@@ -26,10 +23,7 @@ class SystemMonitor:
     @staticmethod
     def check_cpu_utilization():
         """
-        Check CPU utilization rate to be less than 75%.
-
-        Returns:
-            bool: True if CPU utilization is below 75%, False otherwise.
+        Check CPU utilization rate to be less than 75%. Return as True if CPU utilization is below 75%, Otherwise set to False
         """
         cpu_utilization = psutil.cpu_percent()
         return cpu_utilization < 75
@@ -37,10 +31,7 @@ class SystemMonitor:
     @staticmethod
     def check_localhost_availability():
         """
-        Check availability of localhost.
-
-        Returns:
-            bool: True if localhost is available, False otherwise.
+        Check availability of localhost. Return as True if localhost is available, False otherwise.
         """
         try:
             localhost_status = socket.gethostbyname('localhost')
