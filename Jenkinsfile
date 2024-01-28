@@ -43,11 +43,11 @@ podTemplate(containers: [
           {
             sh 'apt install -y pylint'
             echo 'Y'
-            sh 'pylint jenkins_python/menu_selection.py'
+            sh 'pylint jenkins_python/system_monitor.py'
           }
           stage('Unit Test Check')
           {
-            sh 'python3 jenkins_python/unittest_os.py'          
+            sh 'python3 jenkins_python/test_system_monitor.py'          
           }
         
       }
