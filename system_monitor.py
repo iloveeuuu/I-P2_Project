@@ -1,20 +1,46 @@
 # jenkins_system_monitor.py
+"""
+Module for monitoring system status in a Jenkins pipeline.
+"""
+
 import psutil
 import requests
 
 class JenkinsSystemMonitor:
+    """
+    Class providing methods for system monitoring in a Jenkins pipeline.
+    """
+
     @staticmethod
     def check_disk_usage():
+        """
+        Check disk usage to be more than 20%.
+
+        Returns:
+            bool: True if disk usage is above 20%, False otherwise.
+        """
         disk_usage_percent = psutil.disk_usage('/').percent
         return disk_usage_percent > 20
 
     @staticmethod
     def check_cpu_utilization():
+        """
+        Check CPU utilization rate to be less than 75%.
+
+        Returns:
+            bool: True if CPU utilization is below 75%, False otherwise.
+        """
         cpu_utilization = psutil.cpu_percent()
         return cpu_utilization < 75
 
     @staticmethod
     def check_localhost_availability():
+        """
+        Check availability of localhost.
+
+        Returns:
+            bool: True if localhost is available, False otherwise.
+        """
         try:
             localhost_info = psutil.net_if_addrs()['lo']
             return any(addr.family == psutil.AF_INET for addr in localhost_info)
@@ -23,6 +49,12 @@ class JenkinsSystemMonitor:
 
     @staticmethod
     def check_internet_availability():
+        """
+        Check availability of internet by sending an HTTP request to www.google.com.
+
+        Returns:
+            bool: True if internet is available, False otherwise.
+        """
         try:
             response = requests.get('http://www.google.com', timeout=5)
             return response.status_code == 200
@@ -31,6 +63,12 @@ class JenkinsSystemMonitor:
 
     @staticmethod
     def jenkins_pipeline_checks():
+        """
+        Perform checks for a Jenkins pipeline.
+
+        Returns:
+            str: Result message indicating the status of checks.
+        """
         disk_check = JenkinsSystemMonitor.check_disk_usage()
         cpu_check = JenkinsSystemMonitor.check_cpu_utilization()
         localhost_check = JenkinsSystemMonitor.check_localhost_availability()
