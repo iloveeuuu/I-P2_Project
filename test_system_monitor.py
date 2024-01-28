@@ -10,7 +10,7 @@ from system_monitor import SystemMonitor
 
 class TestSystemMonitor(unittest.TestCase):
     """
-    Test cases for the SystemMonitor class.
+    testing of system_monitor.py class.
     """
 
     @patch('psutil.disk_usage')
