@@ -1,14 +1,15 @@
-# jenkins_system_monitor.py
+# system_monitor.py
 """
-Module for monitoring system status in a Jenkins pipeline.
+Module for monitoring system status.
 """
 
 import psutil
+import socket
 import requests
 
-class JenkinsSystemMonitor:
+class SystemMonitor:
     """
-    Class providing methods for system monitoring in a Jenkins pipeline.
+    Class providing methods for system monitoring.
     """
 
     @staticmethod
@@ -43,7 +44,7 @@ class JenkinsSystemMonitor:
         """
         try:
             localhost_info = psutil.net_if_addrs()['lo']
-            return any(addr.family == psutil.AF_INET for addr in localhost_info)
+            return any(addr.family == socket.AF_INET for addr in localhost_info)
         except KeyError:
             return False
 
@@ -69,10 +70,10 @@ class JenkinsSystemMonitor:
         Returns:
             str: Result message indicating the status of checks.
         """
-        disk_check = JenkinsSystemMonitor.check_disk_usage()
-        cpu_check = JenkinsSystemMonitor.check_cpu_utilization()
-        localhost_check = JenkinsSystemMonitor.check_localhost_availability()
-        internet_check = JenkinsSystemMonitor.check_internet_availability()
+        disk_check = SystemMonitor.check_disk_usage()
+        cpu_check = SystemMonitor.check_cpu_utilization()
+        localhost_check = SystemMonitor.check_localhost_availability()
+        internet_check = SystemMonitor.check_internet_availability()
 
         if disk_check and cpu_check:
             return "Everything is OK!"
@@ -82,4 +83,4 @@ class JenkinsSystemMonitor:
             return "ERROR! Disk or CPU usage is not within acceptable limits."
 
 if __name__ == '__main__':
-    print(JenkinsSystemMonitor.jenkins_pipeline_checks())
+    print(SystemMonitor.jenkins_pipeline_checks())
