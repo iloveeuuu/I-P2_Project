@@ -26,7 +26,6 @@ podTemplate(containers: [
             sh 'hostname'
             sh 'git clone https://github.com/iloveeuuu/jenkins_python.git'
             sh 'ls -la jenkins_python'
-            sh 'python3 jenkins_python/cal.py'
           }
           stage(' Installing packages')
           {
@@ -38,8 +37,7 @@ podTemplate(containers: [
             sh 'apt install -y python3-psutil'
             echo 'Y'
             sh 'apt install -y python3-requests'
-            echo 'Y'
-            sh 'python3 jenkins_python/cal.py'       
+            echo 'Y'   
           }
           stage('Static Code Check')
           {
