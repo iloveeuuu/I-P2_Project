@@ -1,8 +1,8 @@
-# system_monitor.py
+# jenkins_system_monitor.py
 import psutil
 import requests
 
-class SystemMonitor:
+class JenkinsSystemMonitor:
     @staticmethod
     def check_disk_usage():
         disk_usage_percent = psutil.disk_usage('/').percent
@@ -28,3 +28,20 @@ class SystemMonitor:
             return response.status_code == 200
         except requests.ConnectionError:
             return False
+
+    @staticmethod
+    def jenkins_pipeline_checks():
+        disk_check = JenkinsSystemMonitor.check_disk_usage()
+        cpu_check = JenkinsSystemMonitor.check_cpu_utilization()
+        localhost_check = JenkinsSystemMonitor.check_localhost_availability()
+        internet_check = JenkinsSystemMonitor.check_internet_availability()
+
+        if disk_check and cpu_check:
+            return "Everything is OK!"
+        elif not localhost_check or not internet_check:
+            return "Network checks failed."
+        else:
+            return "ERROR! Disk or CPU usage is not within acceptable limits."
+
+if __name__ == '__main__':
+    print(JenkinsSystemMonitor.jenkins_pipeline_checks())
