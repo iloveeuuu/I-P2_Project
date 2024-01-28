@@ -31,7 +31,6 @@ class TestSystemMonitor(unittest.TestCase):
     def test_check_localhost_availability(self, mock_net_if_addrs):
         mock_net_if_addrs.return_value = {'lo': MagicMock()}
         result = SystemMonitor.check_localhost_availability()
-        print(f"Result of check_localhost_availability: {result}")
         self.assertTrue(result)
 
     @patch('requests.get')
