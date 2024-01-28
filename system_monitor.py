@@ -31,7 +31,7 @@ class SystemMonitor:
     @staticmethod
     def check_localhost_availability():
         """
-        Check availability of localhost. Return as True if localhost is available, False otherwise.
+        Check availability of localhost. Return as True if localhost is available, Otherwise set to False
         """
         try:
             localhost_status = socket.gethostbyname('localhost')
@@ -42,10 +42,7 @@ class SystemMonitor:
     @staticmethod
     def check_internet_availability():
         """
-        Check availability of internet by sending an HTTP request to www.google.com.
-
-        Returns:
-            bool: True if internet is available, False otherwise.
+        Check availability of internet by sending an HTTP request to www.google.com. Return as True if internet is available, Otherwise set to False
         """
         try:
             response = requests.get('http://www.google.com', timeout=5)
@@ -56,10 +53,7 @@ class SystemMonitor:
     @staticmethod
     def jenkins_pipeline_checks():
         """
-        Perform checks for a Jenkins pipeline.
-
-        Returns:
-            str: Result message indicating the status of checks.
+        Perform checks for a Jenkins pipeline. Determining the results.
         """
         disk_check = SystemMonitor.check_disk_usage()
         cpu_check = SystemMonitor.check_cpu_utilization()
@@ -67,7 +61,7 @@ class SystemMonitor:
         internet_check = SystemMonitor.check_internet_availability()
 
         if disk_check and cpu_check:
-            return "Everything is OK!"
+            return "All is OK!"
 
         if not localhost_check or not internet_check:
             return "Network checks failed."
