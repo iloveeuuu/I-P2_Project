@@ -15,7 +15,8 @@ class SystemMonitor:
     @staticmethod
     def check_disk_usage():
         """
-        Check disk usage to be more than 20%. Return as True if disk usage is above 20%, Otherwise set to False
+        Check disk usage to be more than 20%. 
+        Return as True if disk usage is above 20%, Otherwise set to False
         """
         disk_usage_percent = psutil.disk_usage('/').percent
         return disk_usage_percent > 20
@@ -23,7 +24,8 @@ class SystemMonitor:
     @staticmethod
     def check_cpu_utilization():
         """
-        Check CPU utilization rate to be less than 75%. Return as True if CPU utilization is below 75%, Otherwise set to False
+        Check CPU utilization rate to be less than 75%. 
+        Return as True if CPU utilization is below 75%, Otherwise set to False
         """
         cpu_utilization = psutil.cpu_percent()
         return cpu_utilization < 75
@@ -31,7 +33,8 @@ class SystemMonitor:
     @staticmethod
     def check_localhost_availability():
         """
-        Check availability of localhost. Return as True if localhost is available, Otherwise set to False
+        Check availability of localhost. 
+        Return as True if localhost is available, Otherwise set to False
         """
         try:
             localhost_status = socket.gethostbyname('localhost')
@@ -42,7 +45,8 @@ class SystemMonitor:
     @staticmethod
     def check_internet_availability():
         """
-        Check availability of internet by sending an HTTP request to www.google.com. Return as True if internet is available, Otherwise set to False
+        Check availability of internet by sending an HTTP request to www.google.com. 
+        Return as True if internet is available, Otherwise set to False
         """
         try:
             response = requests.get('http://www.google.com', timeout=5)
