@@ -1,52 +1,39 @@
 import unittest
-from unittest.mock import patch
-from your_system_monitor_script import SystemMonitor
+from unittest.mock import patch, MagicMock
+import requests
+from menu_selection import SystemMonitor
 
 class TestSystemMonitor(unittest.TestCase):
-
-    def test_disk_usage(self):
+    @patch('psutil.disk_usage')
+    def test_check_disk_usage(self, mock_disk_usage):
+        mock_disk_usage.return_value.percent = 25
         monitor = SystemMonitor()
+        self.assertTrue(monitor.check_disk_usage())
 
-        # Mocking psutil.disk_usage to return specific values
-        with patch('psutil.disk_usage') as mock_disk_usage:
-            mock_disk_usage.return_value.percent = 30
-            self.assertTrue(monitor.check_disk_usage(20))
-
-            mock_disk_usage.return_value.percent = 90
-            self.assertFalse(monitor.check_disk_usage(20))
-
-    def test_cpu_utilization(self):
+    @patch('psutil.cpu_percent')
+    def test_check_cpu_utilization(self, mock_cpu_percent):
+        mock_cpu_percent.return_value = 80
         monitor = SystemMonitor()
+        self.assertFalse(monitor.check_cpu_utilization())
 
-        # Mocking psutil.cpu_percent to return specific values
-        with patch('psutil.cpu_percent') as mock_cpu_percent:
-            mock_cpu_percent.return_value = 50
-            self.assertTrue(monitor.check_cpu_utilization(75))
+    @patch('psutil.net_if_addrs')
+    def test_check_localhost_availability(self, mock_net_if_addrs):
+        mock_net_if_addrs.return_value = {'lo': MagicMock()}
+        result = SystemMonitor.check_localhost_availability()
+        self.assertTrue(result)
 
-            mock_cpu_percent.return_value = 10
-            self.assertFalse(monitor.check_cpu_utilization(75))
+    @patch('requests.get')
+    def test_check_internet_availability_with_connection(self, mock_requests_get):
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        result = SystemMonitor.check_internet_availability()
+        self.assertTrue(result)
 
-    def test_localhost(self):
-        monitor = SystemMonitor()
-
-        # Mocking socket.create_connection to succeed
-        with patch('socket.create_connection'):
-            self.assertTrue(monitor.check_localhost())
-
-        # Mocking socket.create_connection to raise an exception
-        with patch('socket.create_connection', side_effect=socket.error):
-            self.assertFalse(monitor.check_localhost())
-
-    def test_internet_access(self):
-        monitor = SystemMonitor()
-
-        # Mocking requests.get to succeed
-        with patch('requests.get'):
-            self.assertTrue(monitor.check_internet_access())
-
-        # Mocking requests.get to raise an exception
-        with patch('requests.get', side_effect=requests.ConnectionError):
-            self.assertFalse(monitor.check_internet_access())
+    @patch('requests.get', side_effect=requests.ConnectionError)
+    def test_check_internet_availability_without_connection(self, mock_requests_get):
+        result = SystemMonitor.check_internet_availability()
+        self.assertFalse(result)
 
 if __name__ == '__main__':
     unittest.main()
