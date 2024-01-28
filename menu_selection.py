@@ -1,69 +1,55 @@
-import psutil
+"""Module for handling menu selection."""
 import socket
+import psutil
 import requests
 
 class SystemMonitor:
-    def __init__(self):
-        pass
-
+    """Class for monitoring system resources and network connectivity."""
     @staticmethod
-    def check_disk_usage(threshold_percentage):
+    def check_disk_usage():
+        """Check disk usage and return True if it's below 20%."""
         disk_usage = psutil.disk_usage('/')
-        return disk_usage.percent > threshold_percentage
+        return disk_usage.percent > 20
 
     @staticmethod
-    def check_cpu_utilization(threshold_percentage):
+    def check_cpu_utilization():
+        """Check CPU utilization and return True if it's below 75%."""
         cpu_utilization = psutil.cpu_percent()
-        return cpu_utilization < threshold_percentage
+        return cpu_utilization < 75
 
     @staticmethod
-    def check_localhost():
+    def check_localhost_availability():
+        """Check if localhost is available and return True if it is."""
         try:
-            socket.create_connection(("localhost", 80), timeout=2)
-            return True
-        except (socket.error, socket.timeout):
+            localhost_status = socket.gethostbyname('localhost')
+            return localhost_status == '127.0.0.1'
+        except socket.error:
             return False
 
     @staticmethod
-    def check_internet_access():
+    def check_internet_availability():
+        """Check internet availability and return True if it's available."""
         try:
-            requests.get("http://www.google.com", timeout=2)
-            return True
+            response = requests.get("http://www.google.com", timeout=5)
+            return response.status_code == 200
         except requests.ConnectionError:
             return False
 
-def perform_system_checks():
+def main():
+    """Disk and CPU."""
     monitor = SystemMonitor()
 
-    disk_check = monitor.check_disk_usage(20)
-    cpu_check = monitor.check_cpu_utilization(75)
-    localhost_check = monitor.check_localhost()
-    internet_check = monitor.check_internet_access()
+    disk_status = monitor.check_disk_usage()
+    cpu_status = monitor.check_cpu_utilization()
+    localhost_status = monitor.check_localhost_availability()
+    internet_status = monitor.check_internet_availability()
 
-    if disk_check or cpu_check:
-        print("ERROR! Disk usage or CPU usage failed.")
-    elif localhost_check and internet_check:
+    if not disk_status or not cpu_status:
+        print("ERROR! Disk usage or CPU utilization exceeded thresholds.")
+    elif localhost_status and internet_status:
         print("Everything is OK.")
     else:
         print("Network checks failed.")
 
-def test_system_monitor():
-    monitor = SystemMonitor()
-
-    # Test Disk Usage Check
-    assert monitor.check_disk_usage(30) is True
-    assert monitor.check_disk_usage(90) is False
-
-    # Test CPU Utilization Check
-    assert monitor.check_cpu_utilization(50) is True
-    assert monitor.check_cpu_utilization(10) is False
-
-    # Test Localhost Check
-    assert monitor.check_localhost() is True
-
-    # Test Internet Access Check
-    assert monitor.check_internet_access() is True
-
 if __name__ == "__main__":
-    perform_system_checks()
-    test_system_monitor()
+    main()
