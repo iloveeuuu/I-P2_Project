@@ -43,9 +43,9 @@ class SystemMonitor:
             bool: True if localhost is available, False otherwise.
         """
         try:
-            localhost_info = psutil.net_if_addrs()['lo']
-            return any(addr.family == socket.AF_INET for addr in localhost_info)
-        except KeyError:
+            localhost_status = socket.gethostbyname('localhost')
+            return localhost_status == '127.0.0.1'
+        except socket.error:
             return False
 
     @staticmethod
