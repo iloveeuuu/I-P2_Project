@@ -49,7 +49,7 @@ podTemplate(containers: [
           }
           stage('Unit Test Check')
           {
-            sh 'python3 jenkins_python/unittest check_os.py'          
+            sh 'python3 jenkins_python/unittest_os.py'          
           }
         
       }
