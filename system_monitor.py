@@ -2,6 +2,7 @@
 """
 Module for monitoring system status.
 """
+
 import socket
 import psutil
 import requests
@@ -76,10 +77,11 @@ class SystemMonitor:
 
         if disk_check and cpu_check:
             return "Everything is OK!"
+
         if not localhost_check or not internet_check:
             return "Network checks failed."
-        else:
-            return "ERROR! Disk or CPU usage is not within acceptable limits."
+
+        return "ERROR! Disk or CPU usage is not within acceptable limits."
 
 if __name__ == '__main__':
     print(SystemMonitor.jenkins_pipeline_checks())
