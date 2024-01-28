@@ -2,9 +2,8 @@
 """
 Module for monitoring system status.
 """
-
-import psutil
 import socket
+import psutil
 import requests
 
 class SystemMonitor:
@@ -77,7 +76,7 @@ class SystemMonitor:
 
         if disk_check and cpu_check:
             return "Everything is OK!"
-        elif not localhost_check or not internet_check:
+        if not localhost_check or not internet_check:
             return "Network checks failed."
         else:
             return "ERROR! Disk or CPU usage is not within acceptable limits."
